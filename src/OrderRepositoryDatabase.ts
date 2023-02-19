@@ -5,7 +5,7 @@ export default class OrderRepositoryDatabase implements OrderRepository {
    
     async save(order: any): Promise<void> {
         const connection = pgp()("postgres://downtownit:123456@localhost:5432/downtownit");
-        await connection.query("insert into cccat10.order (id_order, cpf, total, freight) values ($1, $2, $3, $4)", [order.idOrder, order.cpf, order.total, order.freight]);
+        await connection.query("insert into cccat10.order (id_order, cpf, code, total, freight) values ($1, $2, $3, $4, $5)", [order.idOrder, order.cpf, order.code, order.total, order.freight]);
         for (const item of order.items) {
             await connection.query("insert into cccat10.item (id_order, id_product, price, quantity) values ($1, $2, $3, $4)", [order.idOrder, item.idProduct, item.price, item.quantity]);
         }
@@ -16,5 +16,11 @@ export default class OrderRepositoryDatabase implements OrderRepository {
         const [orderData] = await connection.query("select * from cccat10.order where id_order = $1", [id]);
         await connection.$pool.end();
         return orderData;
+    }
+    async count(): Promise<number> {
+        const connection = pgp()("postgres://downtownit:123456@localhost:5432/downtownit");
+        const [options] = await connection.query("select count(*) from cccat10.order", []);
+        await connection.$pool.end();
+        return parseInt(options.code);
     }
 }
