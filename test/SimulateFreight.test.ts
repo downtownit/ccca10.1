@@ -1,14 +1,13 @@
-import SimulateFreight from "../src/SimulateFreight";
+import SimulateFreight from "../src/application/usecase/SimulateFreight";
 
 let simulateFreight: SimulateFreight;
 
-beforeEach(function() {
+beforeEach(function () {
 	simulateFreight = new SimulateFreight();
 });
 
-test("Deve criar um pedido com 3 produtos calculando o frete", async function() {
+test("Deve calcular o frete para um pedido com 3 itens", async function () {
 	const input = {
-		cpf:  "407.302.170-27",
 		items: [
 			{ idProduct: 1, quantity: 1 },
 			{ idProduct: 2, quantity: 1 },

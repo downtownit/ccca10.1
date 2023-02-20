@@ -1,4 +1,4 @@
-import Checkout from "../src/Checkout";
+import Checkout from "../src/application/usecase/Checkout";
 import sinon from "sinon";
 import CurrencyGatewayHttp from "../src/CurrencyGatewayHttp";
 import ProductRepositoryDatabase from "../src/ProductRepositoryDatabase";
@@ -6,8 +6,9 @@ import CouponRepositoryDatabase from "../src/CouponRepositoryDatabase";
 import CurrencyGateway from "../src/CurrencyGateway";
 import ProductRepository from "../src/ProductRepository";
 import crypto from "crypto";
-import GetOrder from "../src/GetOrder";
+import GetOrder from "../src/application/usecase/GetOrder";
 import OrderRepositoryDatabase from "../src/OrderRepositoryDatabase";
+import Product from "../src/domain/entity/Product";
 
 
 let checkout: Checkout;
@@ -153,17 +154,17 @@ test("Deve criar um pedido com 1 produto em dólar cotação FIXA em STUB" , asy
 	stubCurrencyGateway.restore();
 });
 
-test("Deve criar um pedido com 1 produto em dólar usando STUB mokando o DB", async function () {
+test("Deve criar um pedido com 1 produto em dólar usando um stub", async function () {
 	const stubCurrencyGateway = sinon.stub(CurrencyGatewayHttp.prototype, "getCurrencies").resolves({
 		usd: 3
 	});
 	const stubProductRepository = sinon.stub(ProductRepositoryDatabase.prototype, "getProduct").resolves(
-		{ idProduct: 6, description: "usando STUB", price: 1000, width: 10, height: 10, length: 10, weight: 10, currency: "USD"}
-	);
+		new Product(5, "A", 1000, 10, 10, 10, 10, "USD")
+	)
 	const input = {
 		cpf: "407.302.170-27",
 		items: [
-			{ idProduct: 6, quantity: 1 }
+			{ idProduct: 5, quantity: 1 }
 		]
 	};
 	const output = await checkout.execute(input);
@@ -208,7 +209,6 @@ test("Deve criar um pedido com 1 produto em dólar usando MOCK chamando MOCK uma
 	expect(output.total).toBe(3000);
 	mockCurrenyGateway.verify();
 	mockCurrenyGateway.restore();
-	
 });
 
 test("Deve criar um pedido com 1 produto em dólar usando MOCK chamando MOCK uma vez ou MAIS", async function () {
@@ -259,7 +259,7 @@ test("Deve criar um pedido com 1 produto em dólar usando FAKE e simulando com a
 	}
 	const productRepository: ProductRepository = {
 		async getProduct (idProduct: number): Promise<any> {
-			return { idProduct: 8, description: "usando STUB", price: 1000, width: 10, height: 10, length: 10, weight: 10, currency: "USD"}
+			return new Product(8,"usando STUB",1000,10,10,10,10,"USD")
 		}
 	}
 	checkout = new Checkout(currencyGateway, productRepository);
