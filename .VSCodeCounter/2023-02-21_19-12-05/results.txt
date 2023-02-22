@@ -1,0 +1,77 @@
+Date : 2023-02-21 19:12:05
+Directory : /Users/downtownit/development/branas.io/ccca10.1
+Total : 39 files,  10921 codes, 85 comments, 565 blanks, all 11571 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          2 |      7,291 |          0 |          2 |      7,293 |
+| Log                |          1 |      2,657 |          0 |        414 |      3,071 |
+| TypeScript         |         31 |        911 |          0 |        133 |      1,044 |
+| SQL                |          2 |         40 |          1 |          7 |         48 |
+| JSON with Comments |          1 |         16 |         83 |          9 |        108 |
+| JavaScript         |          1 |          4 |          1 |          0 |          5 |
+| Markdown           |          1 |          2 |          0 |          0 |          2 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                        | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                           |         39 |     10,921 |         85 |        565 |     11,571 |
+| . (Files)                                                                                   |          8 |     10,010 |         85 |        432 |     10,527 |
+| src                                                                                         |         22 |        380 |          0 |         72 |        452 |
+| src (Files)                                                                                 |         11 |        132 |          0 |         25 |        157 |
+| src/application                                                                             |          4 |        123 |          0 |         21 |        144 |
+| src/application/usecase                                                                     |          4 |        123 |          0 |         21 |        144 |
+| src/domain                                                                                  |          7 |        125 |          0 |         26 |        151 |
+| src/domain/entity                                                                           |          7 |        125 |          0 |         26 |        151 |
+| test                                                                                        |          9 |        531 |          0 |         61 |        592 |
++---------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                    | language           | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /Users/downtownit/development/branas.io/ccca10.1/README.md                                  | Markdown           |          2 |          0 |          0 |          2 |
+| /Users/downtownit/development/branas.io/ccca10.1/create.sql                                 | SQL                |         36 |          0 |          7 |         43 |
+| /Users/downtownit/development/branas.io/ccca10.1/drop.sql                                   | SQL                |          4 |          1 |          0 |          5 |
+| /Users/downtownit/development/branas.io/ccca10.1/jest.config.js                             | JavaScript         |          4 |          1 |          0 |          5 |
+| /Users/downtownit/development/branas.io/ccca10.1/package-lock.json                          | JSON               |      7,260 |          0 |          1 |      7,261 |
+| /Users/downtownit/development/branas.io/ccca10.1/package.json                               | JSON               |         31 |          0 |          1 |         32 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/CouponRepository.ts                    | TypeScript         |          4 |          0 |          1 |          5 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/CouponRepositoryDatabase.ts            | TypeScript         |         12 |          0 |          3 |         15 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/CurrencyGateway.ts                     | TypeScript         |          3 |          0 |          0 |          3 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/CurrencyGatewayHttp.ts                 | TypeScript         |          8 |          0 |          2 |         10 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/OrderRepository.ts                     | TypeScript         |          6 |          0 |          2 |          8 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/OrderRepositoryDatabase.ts             | TypeScript         |         31 |          0 |          4 |         35 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/ProductRepository.ts                   | TypeScript         |          4 |          0 |          2 |          6 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/ProductRepositoryDatabase.ts           | TypeScript         |         11 |          0 |          2 |         13 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/api.ts                                 | TypeScript         |         16 |          0 |          3 |         19 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/api_currency.ts                        | TypeScript         |          9 |          0 |          4 |         13 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/application/usecase/Checkout.ts        | TypeScript         |         61 |          0 |          6 |         67 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/application/usecase/GetOrder.ts        | TypeScript         |         22 |          0 |          6 |         28 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/application/usecase/SimulateFreight.ts | TypeScript         |         28 |          0 |          5 |         33 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/application/usecase/ValidateCoupon.ts  | TypeScript         |         12 |          0 |          4 |         16 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/cli.ts                                 | TypeScript         |         28 |          0 |          2 |         30 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/Coupon.ts                | TypeScript         |         10 |          0 |          3 |         13 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/Cpf.ts                   | TypeScript         |         39 |          0 |          7 |         46 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/CurrencyTable.ts         | TypeScript         |         14 |          0 |          4 |         18 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/FreightCalculator.ts     | TypeScript         |          9 |          0 |          1 |         10 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/Item.ts                  | TypeScript         |          4 |          0 |          3 |          7 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/Order.ts                 | TypeScript         |         41 |          0 |          6 |         47 |
+| /Users/downtownit/development/branas.io/ccca10.1/src/domain/entity/Product.ts               | TypeScript         |          8 |          0 |          2 |         10 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/Checkout.test.ts                      | TypeScript         |        269 |          0 |         24 |        293 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/Coupon.test.ts                        | TypeScript         |          9 |          0 |          4 |         13 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/Cpf.test.ts                           | TypeScript         |         26 |          0 |          5 |         31 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/FreightCalculator.test.ts             | TypeScript         |          7 |          0 |          2 |          9 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/Order.test.ts                         | TypeScript         |         54 |          0 |          7 |         61 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/Product.test.ts                       | TypeScript         |          4 |          0 |          1 |          5 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/SimulateFreight.test.ts               | TypeScript         |         18 |          0 |          3 |         21 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/ValidateCoupon.test.ts                | TypeScript         |         15 |          0 |          4 |         19 |
+| /Users/downtownit/development/branas.io/ccca10.1/test/api.test.ts                           | TypeScript         |        129 |          0 |         11 |        140 |
+| /Users/downtownit/development/branas.io/ccca10.1/tsconfig.json                              | JSON with Comments |         16 |         83 |          9 |        108 |
+| /Users/downtownit/development/branas.io/ccca10.1/yarn-error.log                             | Log                |      2,657 |          0 |        414 |      3,071 |
+| Total                                                                                       |                    |     10,921 |         85 |        565 |     11,571 |
++---------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
