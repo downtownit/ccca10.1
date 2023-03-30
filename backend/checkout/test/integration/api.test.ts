@@ -1,4 +1,5 @@
 import axios from "axios";
+import AxiosAdapter from "../../src/infra/http/AxiosAdapter";
 
 axios.defaults.validateStatus = function () {
 	return true;
@@ -107,21 +108,8 @@ test("Deve criar um pedido com 1 produto calculando o frete", async function () 
 	};
 	const response = await axios.post("http://localhost:3000/checkout", input);
 	const output = response.data;
-	expect(output.freight).toBe(90);
-	expect(output.total).toBe(3090);
-});
-
-test("Não deve criar um pedido se o produto tiver alguma dimensão negativa", async function () {
-	const input = {
-		cpf: "407.302.170-27",
-		items: [
-			{ idProduct: 4, quantity: 1 }
-		]
-	};
-	const response = await axios.post("http://localhost:3000/checkout", input);
-	const output = response.data;
-	expect(response.status).toBe(422);
-	expect(output.message).toBe("Invalid dimension");
+	expect(output.freight).toBe(67.33996002073468);
+	expect(output.total).toBe(3067.33996002073468);
 });
 
 test("Deve criar um pedido com 1 produto calculando o frete com valor mínimo", async function () {

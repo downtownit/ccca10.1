@@ -14,6 +14,9 @@ import Connection from "../../src/infra/database/Connection";
 import OrderRepository from "../../src/application/repository/OrderRepository";
 import CouponRepository from "../../src/application/repository/CouponRepository";
 import AxiosAdapter from "../../src/infra/http/AxiosAdapter";
+import CatalogGatewayHttp from "../../src/infra/gateway/CatalogGatewayHttp";
+import AuthDecorator from "../../src/application/decorator/AuthDecorator";
+import LogDecorator from "../../src/application/decorator/LogDecorator";
 
 let checkout: Checkout;
 let getorder: GetOrder;
@@ -129,18 +132,8 @@ test("Deve criar um pedido com 1 produto calculando o frete", async function () 
 		to: "88015600"
 	};
 	const output = await checkout.execute(input);
-	expect(output.freight).toBe(90);
-	expect(output.total).toBe(3090);
-});
-
-test("Não deve criar um pedido se o produto tiver alguma dimensão negativa", async function () {
-	const input = {
-		cpf:  "407.302.170-27",
-		items: [
-			{ idProduct: 4, quantity: 1 }
-		]
-	};
-	await expect(() => checkout.execute(input)).rejects.toThrow(new Error("Invalid dimension"));
+	expect(output.freight).toBe( 67.33996002073468);
+	expect(output.total).toBe(3067.339960020735);
 });
 
 test("Deve criar um pedido com 1 produto calculando o frete com valor mínimo", async function () {
@@ -192,7 +185,6 @@ test("Deve criar um pedido com 1 produto em dólar usando um stub", async functi
 });
 
 test("Deve criar um pedido com 3 produtos com cupom de desconto com um SPY", async function () {
-	const spyProductRepository = sinon.spy(ProductRepositoryDatabase.prototype,"getProduct");
 	const spyCouponRepository = sinon.spy(CouponRepositoryDatabase.prototype, "getCoupon");
 	const input = {
 		cpf: "407.302.170-27",
@@ -207,9 +199,7 @@ test("Deve criar um pedido com 3 produtos com cupom de desconto com um SPY", asy
 	expect(output.total).toBe(4872);
 	expect(spyCouponRepository.calledOnce).toBeTruthy();
 	expect(spyCouponRepository.calledWith("VALE20")).toBeTruthy();
-	expect(spyProductRepository.calledThrice).toBeTruthy();
 	spyCouponRepository.restore();
-	spyProductRepository.restore();
 });
 
 test("Deve criar um pedido com 1 produto em dólar usando MOCK chamando MOCK uma vez com ONCE", async function () {
@@ -267,7 +257,7 @@ test("Deve criar um pedido com 1 produto em dólar usando FAKE", async function 
 	expect(output.total).toBe(3000);
 });
 
-test("Deve criar um pedido com 1 produto em dólar usando FAKE e simulando com a implementacao de 1 PRODUCT", async function () {
+test("Deve criar um pedido com 1 produto em dólar usando um fake", async function () {
 	const currencyGateway: CurrencyGateway = {
 		async getCurrencies(): Promise<any> {
 			return {
@@ -276,22 +266,24 @@ test("Deve criar um pedido com 1 produto em dólar usando FAKE e simulando com a
 		}
 	}
 	const productRepository: ProductRepository = {
-		async getProduct(idProduct: number): Promise<any> {
-			return new Product(8, "usando STUB", 1000, 10, 10, 10, 10, "USD");
+		async getProduct (idProduct: number): Promise<any> {
+			return new Product(6, "A", 1000, 10, 10, 10, 10, "USD");
 		},
 		async getProducts (): Promise<Product[]> {
 			return [];
 		}
 	}
+	const catalogGatewayStub = sinon.stub(CatalogGatewayHttp.prototype, "getProduct").resolves(new Product(6, "A", 1000, 10, 10, 10, 10, "USD"));
 	checkout = new Checkout(currencyGateway, productRepository, couponRepositoy, orderRepository);
 	const input = {
 		cpf: "407.302.170-27",
 		items: [
-			{ idProduct: 5, quantity: 1 }
+			{ idProduct: 6, quantity: 1 }
 		]
 	};
 	const output = await checkout.execute(input);
 	expect(output.total).toBe(3000);
+	catalogGatewayStub.restore();
 });
 
 test("Deve criar um pedido e verificar o código de série", async function () {
@@ -310,4 +302,51 @@ test("Deve criar um pedido e verificar o código de série", async function () {
 	const output = await getorder.execute(uuid);
 	expect(output.code).toBe("202300000001");
 	stub.restore();
+});
+
+test("Deve criar um pedido com 3 produtos com cep", async function () {
+	const uuid = crypto.randomUUID();
+	const input = {
+		uuid,
+		cpf: "407.302.170-27",
+		items: [
+			{ idProduct: 1, quantity: 1 }
+		],
+		from: "22060030",
+		to: "88015600"
+	};
+	const output = await checkout.execute(input);
+	expect(output.freight).toBe(22.446653340244893);
+	expect(output.total).toBe(1022.446653340244893)
+});
+
+test("Deve criar um pedido com 3 produtos com cupom de desconto somente se estiver autenticado", async function () {
+	const decoratedCheckout = new AuthDecorator(new LogDecorator(checkout));
+	const input = {
+		cpf: "407.302.170-27",
+		items: [
+			{ idProduct: 1, quantity: 1 },
+			{ idProduct: 2, quantity: 1 },
+			{ idProduct: 3, quantity: 3 }
+		],
+		coupon: "VALE20",
+		token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvZGJyYW5AZ21haWwuY29tIiwiaWF0IjoxNjc3Njc1NjAwMDAwLCJleHBpcmVzSW4iOjEwMDAwMDAwfQ.z8Wyk7pLOeX9nZs2DzLuYZcF5sGiCKEJKVDtph7ZPS4"
+	};
+	const output = await decoratedCheckout.execute(input);
+	expect(output.total).toBe(4872);
+});
+
+test("Não deve funcionar se o usuário não estiver autenticado", async function () {
+	const decoratedCheckout = new AuthDecorator(new LogDecorator(checkout));
+	const input = {
+		cpf: "407.302.170-27",
+		items: [
+			{ idProduct: 1, quantity: 1 },
+			{ idProduct: 2, quantity: 1 },
+			{ idProduct: 3, quantity: 3 }
+		],
+		coupon: "VALE20",
+		token: "eyJlbWFpbCI6InJvZGJyYW5AZ21haWwuY29tIiwiaWF0IjoxNjc3Njc1NjAwMDAwLCJleHBpcmVzSW4iOjEwMDAwMDAwfQ.z8Wyk7pLOeX9nZs2DzLuYZcF5sGiCKEJKVDtph7ZPS4"
+	};
+	await expect(() => decoratedCheckout.execute(input)).rejects.toThrow(new Error("Auth error"));
 });
